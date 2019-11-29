@@ -100,6 +100,7 @@ use PHPShopify\Exception\SdkException;
  * @property-read ScriptTag $ScriptTag
  * @property-read ShippingZone $ShippingZone
  * @property-read Shop $Shop
+ * @property-read ShopifyPayments $ShopifyPayments
  * @property-read SmartCollection $SmartCollection
  * @property-read Theme $Theme
  * @property-read User $User
@@ -139,6 +140,7 @@ use PHPShopify\Exception\SdkException;
  * @method ScriptTag ScriptTag(integer $id = null)
  * @method ShippingZone ShippingZone(integer $id = null)
  * @method Shop Shop(integer $id = null)
+ * @method ShopifyPayments ShopifyPayments()
  * @method SmartCollection SmartCollection(integer $id = null)
  * @method Theme Theme(int $id = null)
  * @method User User(integer $id = null)
@@ -188,6 +190,7 @@ class ShopifySDK
         'ScriptTag',
         'ShippingZone',
         'Shop',
+        'ShopifyPayments',
         'SmartCollection',
         'Theme',
         'User',
@@ -222,16 +225,20 @@ class ShopifySDK
     protected $childResources = array(
         'Article'           => 'Blog',
         'Asset'             => 'Theme',
+        'Balance'           => 'ShopifyPayments',
         'CustomerAddress'   => 'Customer',
+        'Dispute'           => 'ShopifyPayments',
         'Fulfillment'       => 'Order',
         'FulfillmentEvent'  => 'Fulfillment',
         'OrderRisk'         => 'Order',
+        'Payouts'           => 'ShopifyPayments',
         'ProductImage'      => 'Product',
         'ProductVariant'    => 'Product',
         'DiscountCode'      => 'PriceRule',
         'Province'          => 'Country',
         'Refund'            => 'Order',
         'Transaction'       => 'Order',
+        'Transactions'      => 'Balance',
         'UsageCharge'       => 'RecurringApplicationCharge',
     );
 
