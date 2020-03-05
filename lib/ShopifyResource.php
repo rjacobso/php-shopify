@@ -601,4 +601,107 @@ abstract class ShopifyResource
         parse_str($this->getPrevLink(), $nextPageParams);
         return $nextPageParams;
     }
+
+    /**
+     * Checks response headers for existence of next page info
+     *
+     * @return boolean
+     */
+    static public function lastResourceContainsNextPageInfo()
+    {
+        $headers = self::$lastHttpResponseHeaders;
+
+        if (isset($headers["Link"])) {
+            $matchData = array();
+
+            if (preg_match("/<([^>]*)>; rel=\"next\"/", $headers["Link"], $matchData)) {
+                // found rel="next"
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks response headers for existence of previous page info
+     *
+     * @return boolean
+     */
+
+    static public function lastResourceContainsPrevPageInfo()
+    {
+        $headers = self::$lastHttpResponseHeaders;
+
+        if (isset($headers["Link"])) {
+            $matchData = array();
+
+            if (preg_match("/<([^>]*)>; rel=\"previous\"/", $headers["Link"], $matchData)) {
+                // found rel="prev"
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets next page info string for use in pagination
+     *
+     * @return string
+     */
+    static public function getNextPageInfo()
+    {
+        $headers = self::$lastHttpResponseHeaders;
+
+        if (isset($headers["Link"])) {
+            $matchData = array();
+
+            if (preg_match("/<([^>]*)>; rel=\"next\"/", $headers["Link"], $matchData)) {
+                // found rel="next"
+                $query = parse_url($matchData[1], PHP_URL_QUERY);
+
+                $pairs = explode( "&", $query );
+                foreach( $pairs as $p ) {
+                    list( $key, $value) = explode( "=", $p );
+
+                    if( $key == "page_info" ) {
+                        return $value;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Gets previous page info string for use in pagination
+     *
+     * @return string
+     */
+    static public function getPrevPageInfo()
+    {
+        $headers = self::$lastHttpResponseHeaders;
+
+        if (isset($headers["Link"])) {
+            $matchData = array();
+
+            if (preg_match("/<([^>]*)>; rel=\"previous\"/", $headers["Link"], $matchData)) {
+                // found rel="prev"
+                $query = parse_url($matchData[1], PHP_URL_QUERY);
+
+                $pairs = explode( "&", $query );
+                foreach( $pairs as $p ) {
+                    list( $key, $value) = explode( "=", $p );
+
+                    if( $key == "page_info" ) {
+                        return $value;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 }
